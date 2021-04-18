@@ -1,0 +1,83 @@
+<html>
+
+    <head><title>DATA 608 Assignment</title></head>
+
+    <body>
+
+    <h1>DATA 608 Assignment 5</h1>
+
+    <h4>Author: Katie Evers </h4>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        
+    <form>
+        1. Create a function to reverse any word that you type in.
+        <div id='reverse'>
+            <input type="button" value="Reverse" onClick="reverse();">
+            <input id="reverseInput" placeholder='Enter String' type="text" size="12">
+        </div>
+        
+        <p id="target"></p>
+        2. Create a function that takes an input number, and prints a table with the first 20 multiples of the number, in order 5x4.
+        <div id='multiples'>
+            <input type="button" value="Multiples" onClick="multiples();">
+            <input id="multiplesInput" placeholder='Enter Number' type="text" size="12">
+        </div>
+        <div id='container'></div>
+        <div id='test'></div>
+    </form>
+                
+    <script>
+        
+    function multiples(){
+        input = document.getElementById('multiplesInput').value;
+        mult=[];
+        for (var i=1; i<21;i++){
+            temp = input*i;
+            mult.push(temp);
+        }
+        
+        var perrow = 5,
+            html = "<table><tr>";
+    
+        for(var i=0; i<mult.length; i++){
+            html += `<td>${mult[i]}</td>`;
+            
+            var next = i+1;
+            if (next%perrow == 0 && next!=mult.length){
+                html += "</tr><tr>";
+            }
+        }
+        
+        html += "</tr></table";
+        
+        document.getElementById('container').innerHTML = html;
+    }
+
+    function reverse(){
+        input = document.getElementById('reverseInput').value;
+        reversed = input.split('').reverse().join('');
+        document.getElementById('target').innerHTML = reversed;
+    }
+        
+    document.write('3. Write a function to load the presidents.csv data and display the data as an html table.')
+        
+        d3.text("https://raw.githubusercontent.com/charleyferrari/CUNY_DATA_608/master/module5/data/presidents.csv", function(data) {
+        var parsedCSV = d3.csv.parseRows(data);
+
+        var container = d3.select("body")
+            .append("table")
+
+            .selectAll("tr")
+                .data(parsedCSV).enter()
+                .append("tr")
+
+            .selectAll("td")
+                .data(function(d) { return d; }).enter()
+                .append("td")
+                .text(function(d) { return d; });
+    });
+
+    </script>
+
+    </body>
+</html>
